@@ -8,6 +8,6 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 
 public interface DataService {
-    @GET("/APIAppMusic/server/Quangcao/data.php")
+    @GET("/APIAppMusic/server/quangcao.php")
     Call<List<QuangCao>> getDataBanner();
 }

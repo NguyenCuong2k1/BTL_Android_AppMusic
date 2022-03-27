@@ -1,10 +1,12 @@
 package com.btlandroid.music.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.btlandroid.music.R;
+import com.btlandroid.music.activity.DanhsachbaihatActivity;
 import com.btlandroid.music.adapter.PlaylistAdapter;
 import com.btlandroid.music.model.Playlist;
 import com.btlandroid.music.service.APIRetrofitClient;
@@ -60,6 +63,15 @@ public class PlaylistFragment extends Fragment {
 
                 playlistAdapter = new PlaylistAdapter(getActivity(), android.R.layout.simple_list_item_1, playlists);
                 lvPlaylist.setAdapter(playlistAdapter);
+                setListViewHeightBasedOnChildren(lvPlaylist);
+                lvPlaylist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Intent intent = new Intent(getActivity(), DanhsachbaihatActivity.class);
+                        intent.putExtra("itemplaylist",playlists.get(position));
+                        startActivity(intent);
+                    }
+                });
             }
 
             @Override

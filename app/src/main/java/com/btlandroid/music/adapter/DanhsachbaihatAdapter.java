@@ -1,6 +1,7 @@
 package com.btlandroid.music.adapter;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,17 +20,24 @@ public class DanhsachbaihatAdapter extends  RecyclerView.Adapter<DanhsachbaihatA
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view= inflater.inflate(R.layout.dong_danh_sach_bai_hat,parent,false);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Baihat baihat = mangbaihat.get(position);
+        holder.txtcasi.setText(baihat.getCasi());
+        holder.txttenbaihat.setText(baihat.getTenbaihat());
+        holder.txtindex.setText(position+1+" ");
 
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+
+        return mangbaihat.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

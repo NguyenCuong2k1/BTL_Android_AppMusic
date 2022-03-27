@@ -3,6 +3,7 @@ package com.btlandroid.music.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.btlandroid.music.R;
+import com.btlandroid.music.adapter.DanhsachbaihatAdapter;
 import com.btlandroid.music.model.Playlist;
 import com.btlandroid.music.model.QuangCao;
 import com.btlandroid.music.service.APIService;
@@ -46,6 +48,7 @@ public class DanhsachbaihatActivity extends AppCompatActivity {
     Playlist playlist;
     ImageView imgdanhsachcakhuc;
     ArrayList<Baihat> mangbaihat;
+    DanhsachbaihatAdapter danhsachbaihatAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +74,9 @@ public class DanhsachbaihatActivity extends AppCompatActivity {
             @Override
             public void onResponse(Callback<List<Baihat>> call, Response<List<Baihat>> Response)
             mangbaihat = (ArrayList<Baihat>) response.body();
-            Log.d("BBB",mangbaihat.get(0).getTenbaihat());
+            danhsachbaihatAdapter = new DanhsachbaihatAdapter(DanhsachbaihatActivity.this,mangbaihat);
+            recyclerViewdanhsachbaihat.setLayoutManager(new LinearLayoutManager(DanhsachbaihatActivity.this));
+            recyclerViewdanhsachbaihat.setAdapter(danhsachbaihatAdapter);
         }
     }
 

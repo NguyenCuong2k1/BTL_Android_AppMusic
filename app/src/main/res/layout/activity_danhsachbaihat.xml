@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".activity.DanhsachbaihatActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:fitsSystemWindows="true"
+        android:id="@+id/appbarlayout"
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            app:expandedTitleGravity="center|bottom"
+            app:expandedTitleMarginBottom="33dp"
+            android:background="@mipmap/ic_launcher"
+            android:fitsSystemWindows="true"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            android:id="@+id/collapsingtoolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <View
+                android:background="@drawable/bg_banner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </View>
+            <Toolbar
+                android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="pin"
+                android:id="@+id/toolbardanhsach"
+                android:elevation="6dp"
+                android:layout_width="match_parent"
+                android:layout_height="75dp">
+            </Toolbar>
+            <ImageView
+                android:elevation="6dp"
+                android:layout_marginTop="38dp"
+                android:src="@mipmap/ic_launcher"
+                android:layout_marginBottom="50dp"
+                android:layout_gravity="center"
+                android:id="@+id/imageviewdanhsachcakhuc"
+                android:layout_width="200dp"
+                android:layout_height="200dp">
+            </ImageView>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+
+        android:backgroundTint="#a845de"
+        android:src="@drawable/bg_banner"
+        android:scaleType="fitXY"
+        app:fabSize="normal"
+        android:id="@+id/floatingactionbutton"
+        app:layout_anchorGravity="bottom|center"
+        app:layout_anchor="@id/appbarlayout"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </com.google.android.material.floatingactionbutton.FloatingActionButton>
+    <androidx.core.widget.NestedScrollView
+        android:layout_marginTop="30dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerviewdanhsachbaihat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

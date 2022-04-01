@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
+
+    <ImageView
+        android:id="@+id/imvSong"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:scaleType="fitXY"
+        android:layout_margin="4dp" />
+
+    <TextView
+        android:id="@+id/tvNameSong"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/imvLike"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_toRightOf="@id/imvSong"
+        android:ellipsize="end"
+        android:lines="1"
+        android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/tvNameSinger"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvNameSong"
+        android:layout_toLeftOf="@id/imvLike"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_toRightOf="@id/imvSong"
+        android:ellipsize="end"
+        android:lines="1"
+        android:singleLine="true"
+        android:textSize="13sp" />
+
+    <ImageView
+        android:id="@+id/imvLike"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_unlike" />
+
+
+</RelativeLayout>

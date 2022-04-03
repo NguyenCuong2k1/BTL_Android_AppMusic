@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:id="@+id/coordinatorLayout"
+    android:background="#f5f5f5"
+    tools:context=".activity.ListSongActivity">
+    
+    <com.google.android.material.appbar.AppBarLayout
+        android:fitsSystemWindows="true"
+        android:layout_width="match_parent"
+        android:id="@+id/appbarLayout"
+        android:layout_height="300dp">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingtoolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:expandedTitleGravity="center|bottom"
+            app:collapsedTitleGravity="center_vertical|left"
+            app:expandedTitleMarginBottom="28dp"
+            android:elevation="10dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbarDanhSach"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                app:layout_collapseMode="pin"
+                android:elevation="10dp"
+                app:popupTheme="@style/Theme.AppCompat.Light">
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <ImageView
+                android:id="@+id/imvListSong"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="38dp"
+                android:layout_marginBottom="52dp"
+                android:padding="0dp"
+                android:scaleType="fitXY"
+                android:elevation="8dp"
+                android:src="@mipmap/ic_launcher" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_banner" />
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:id="@+id/floatingActionButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:backgroundTint="#D29090"-->
+<!--        android:scaleType="fitXY"-->
+<!--        android:src="@drawable/ic_music"-->
+<!--        app:fabSize="normal"-->
+<!--        app:layout_anchor="@id/appbarLayout"-->
+<!--        app:layout_anchorGravity="bottom|center"-->
+<!--        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />-->
+
+        <Button
+            android:id="@+id/btnPlaySongShuffle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_btn_playsong"
+            android:scaleType="fitXY"
+            android:text="Phát ngẫu nhiên"
+            android:elevation="20dp"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            android:src="@drawable/ic_music"
+            app:layout_anchor="@id/llListSong"
+            app:layout_anchorGravity="top|center"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />
+
+    <androidx.core.widget.NestedScrollView
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+
+        android:layout_marginTop="36dp"
+        android:layout_marginHorizontal="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/llListSong"
+            android:orientation="vertical"
+            android:paddingTop="32dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+            <TextView
+                android:id="@+id/tvListSong"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Danh sách bài hát"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvListSong"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
+
+        </LinearLayout>
+
+
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

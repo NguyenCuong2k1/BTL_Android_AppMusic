@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.btlandroid.music.R;
-import com.btlandroid.music.activity.DanhsachbaihatActivity;
+import com.btlandroid.music.activity.ListSongActivity;
 import com.btlandroid.music.config.Config;
 import com.btlandroid.music.model.QuangCao;
 import com.squareup.picasso.Picasso;
@@ -59,16 +59,17 @@ public class BannerAdapter extends PagerAdapter {
         tvTitle.setText(listBanner.get(position).getNameBaiHat());
         tvContent.setText(listBanner.get(position).getNoiDung());
 
+        container.addView(view);
+
         view.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, DanhsachbaihatActivity.class);
-                intent.putExtra("banner",listBanner.get(position));
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ListSongActivity.class);
+                intent.putExtra("banner", listBanner.get(position));
                 context.startActivity(intent);
+
             }
         });
-        container.addView(view);
-        Log.d(TAG, (Config.domain + listBanner.get(position).getImage()));
         return view;
     }
 

@@ -1,15 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.SearchFragment"
-    android:background="@color/black">
+    android:background="#f5f5f5">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tbarSearch"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSearch"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text= "@string/hello_blank_fragment" />
+        android:layout_below="@+id/tbarSearch" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/tvAlert"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="Không có dữ liệu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</RelativeLayout>

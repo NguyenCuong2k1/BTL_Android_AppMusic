@@ -59,6 +59,7 @@ public class PlaySongActivity extends AppCompatActivity {
         initView();
         addEvent();
 
+
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("isShuffle")) {
             boolean isShuffle = intent.getBooleanExtra("isShuffle", false);

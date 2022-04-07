@@ -1,12 +1,18 @@
 package com.btlandroid.music.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -15,6 +21,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.btlandroid.music.R;
@@ -23,6 +30,7 @@ import com.btlandroid.music.config.Config;
 import com.btlandroid.music.fragment.MusicDiscFrament;
 import com.btlandroid.music.fragment.PlayListSongFragment;
 import com.btlandroid.music.model.BaiHat;
+import com.btlandroid.music.service.PlaySongService;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -41,28 +49,75 @@ public class PlaySongActivity extends AppCompatActivity {
     ViewPager2 viewPager2;
     MusicDiscFrament musicDiscFrament;
     PlayListSongFragment playListSongFragment;
+    boolean isPlaying = false;
+    int sbTimeMax;
+    BaiHat song;
 
-    MediaPlayer mediaPlayer;
-
-    int position = 0;
     boolean repeat = false;
     boolean shuffle = false;
     boolean next = false;
+    private PlaySongService playSongService;
+    private boolean isServiceConnected;
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            PlaySongService.MyBinder myBinder = (PlaySongService.MyBinder) service;
+            playSongService = myBinder.getPlaySongService();
+            isServiceConnected = true;
+
+            if(PlaySongActivity.this.getIntent().getBooleanExtra("isFromNotification", false)) {
+                playSongService.sendDataToActivity(PlaySongService.ACTION_START);
+                if(playSongService.shuffle) {
+                    imvShuffle.setImageResource(R.drawable.ic_shuffle_on);
+                    shuffle = true;
+                } else {
+                    imvShuffle.setImageResource(R.drawable.ic_shuffle);
+                    shuffle = false;
+                }
+
+                if(playSongService.repeat) {
+                    imvRepeat.setImageResource(R.drawable.ic_repeat_on);
+                    repeat = true;
+                } else {
+                    imvRepeat.setImageResource(R.drawable.ic_repeat);
+                    repeat=  false;
+                }
+            }
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            isServiceConnected = false;
+        }
+    };
+
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            handleLayoutMusic(intent);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_song);
 
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("data_to_activity"));
+
         mapping();
         getData();
         initView();
         addEvent();
 
+
         Intent intent = getIntent();
+        boolean isShuffle = false;
         if (intent != null && intent.hasExtra("isShuffle")) {
-            boolean isShuffle = intent.getBooleanExtra("isShuffle", false);
-            if(isShuffle) {
+            isShuffle = intent.getBooleanExtra("isShuffle", false);
+            if (isShuffle) {
                 if (!shuffle) {
                     if (repeat == true) {
                         repeat = false;
@@ -78,7 +133,85 @@ public class PlaySongActivity extends AppCompatActivity {
 
         }
 
+        Intent intentService = new Intent(PlaySongActivity.this, PlaySongService.class);
+        intentService.putExtra("ListSong", listSong);
+        intentService.putExtra("isShuffle", isShuffle);
+        if(!getIntent().getBooleanExtra("isFromNotification", false)) {
+            startService(intentService);
+
+        }
+        bindService(intentService, serviceConnection, BIND_AUTO_CREATE);
+
     }
+
+    private void handleLayoutMusic(Intent intent) {
+
+        Bundle bundle = intent.getExtras();
+        int action = bundle.getInt("action", 0);
+        switch (action) {
+            case PlaySongService.ACTION_START:
+                setDataLayoutByActionStart(bundle);
+                setStatusPlayOrPause(bundle);
+                break;
+            case PlaySongService.ACTION_RESUME:
+                setStatusPlayOrPause(bundle);
+                break;
+            case PlaySongService.ACTION_PAUSE:
+                setStatusPlayOrPause(bundle);
+                break;
+            case PlaySongService.ACTION_NEXT:
+                setDataLayoutByActionStart(bundle);
+                break;
+            case PlaySongService.ACTION_PREV:
+                setDataLayoutByActionStart(bundle);
+                break;
+            case PlaySongService.ACTION_CANCEL:
+//                layout.setVisibility(View.GONE);
+                finish();
+                break;
+            case PlaySongService.ACTION_UPDATE_TIME:
+                updateTimeUI(bundle);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void updateTimeUI(Bundle bundle) {
+        int sbTimeProgress = bundle.getInt("sbTimeProgress");
+        String timeCurrent = bundle.getString("timeCurrent");
+
+        tvTimeSong.setText(timeCurrent);
+        sbTime.setProgress(sbTimeProgress);
+    }
+
+    private void setDataLayoutByActionStart(Bundle bundle) {
+        song = (BaiHat) bundle.getParcelable("song");
+        isPlaying = bundle.getBoolean("status", false);
+        sbTimeMax = bundle.getInt("sbTimeMax");
+        String timeTotal = bundle.getString("timeTotal", "00:00");
+
+        if (song != null) {
+            getSupportActionBar().setTitle(song.getTenBaiHat());
+            imvPlay.setImageResource(R.drawable.ic_pause);
+            musicDiscFrament.playSong(song.getImageBaiHat());
+            sbTime.setMax(sbTimeMax);
+            tvTimeTotal.setText(timeTotal);
+        }
+
+    }
+
+    private void setStatusPlayOrPause(Bundle bundle) {
+        isPlaying = bundle.getBoolean("status", false);
+        if (isPlaying) {
+            imvPlay.setImageResource(R.drawable.ic_pause);
+            musicDiscFrament.resumeSong();
+        } else {
+            imvPlay.setImageResource(R.drawable.ic_play);
+            musicDiscFrament.stopSong();
+        }
+    }
+
 
     private void getData() {
         Intent intent = getIntent();
@@ -95,54 +228,32 @@ public class PlaySongActivity extends AppCompatActivity {
     }
 
     private void addEvent() {
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (viewPagerPlaySong.getItem(1) != null) {
-                    if (listSong.size() > 0) {
-                        musicDiscFrament.playSong(listSong.get(0).getImageBaiHat());
-                        handler.removeCallbacks(this);
-                    } else {
-                        handler.postDelayed(this, 300);
-                    }
-                }
-            }
-        }, 500);
-
         imvPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(listSong != null && listSong.size() > 0) {
-                    if (mediaPlayer.isPlaying()) {
-                        mediaPlayer.pause();
-                        imvPlay.setImageResource(R.drawable.ic_play);
-                        musicDiscFrament.stopSong();
+                if (isServiceConnected == true) {
+                    if (isPlaying) {
+                        playSongService.pauseMusic();
                     } else {
-                        mediaPlayer.start();
-                        imvPlay.setImageResource(R.drawable.ic_pause);
-                        musicDiscFrament.resumeSong();
-
+                        playSongService.resumeMusic();
                     }
                 }
+
             }
         });
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mediaPlayer != null) {
-                    mediaPlayer.stop();
-                    listSong.clear();
-                }
+                listSong.clear();
                 finish();
-
             }
         });
-
+//
         imvRepeat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                playSongService.onClickRepeat();
                 if (!repeat) {
                     if (shuffle == true) {
                         shuffle = false;
@@ -156,10 +267,11 @@ public class PlaySongActivity extends AppCompatActivity {
                 }
             }
         });
-
+//
         imvShuffle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                playSongService.onClickShuffle();
                 if (!shuffle) {
                     if (repeat == true) {
                         repeat = false;
@@ -173,7 +285,7 @@ public class PlaySongActivity extends AppCompatActivity {
                 }
             }
         });
-
+//
         sbTime.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -187,113 +299,25 @@ public class PlaySongActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if(mediaPlayer != null) {
-                    mediaPlayer.seekTo(seekBar.getProgress());
-                }
+                playSongService.onStopTrackingTouch(seekBar.getProgress());
             }
         });
 
         imvNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listSong.size() > 0) {
-                    if (mediaPlayer.isPlaying() || mediaPlayer != null) {
-                        mediaPlayer.stop();
-                        mediaPlayer.release();
-                        mediaPlayer = null;
-                    }
-                    if (position < listSong.size()) {
-                        imvPlay.setImageResource(R.drawable.ic_pause);
-                        position++;
-
-                        if (repeat == true) {
-                            if (position == 0) {
-                                position = listSong.size();
-                            }
-                            position -= 1;
-                        }
-
-                        if (shuffle == true) {
-                            Random random = new Random();
-                            int index = random.nextInt(listSong.size());
-                            if (index == position) {
-                                position = index - 1;
-                            }
-                            position = index;
-                        }
-                        if (position > (listSong.size() - 1)) {
-                            position = 0;
-                        }
-                        new PlayMp3().execute(listSong.get(position).getLinkBaiHat());
-                        musicDiscFrament.playSong(listSong.get(position).getImageBaiHat());
-                        getSupportActionBar().setTitle(listSong.get(position).getTenBaiHat());
-//                        updateTime();
-                    }
+                if (isServiceConnected == true) {
+                    playSongService.nextMusic();
                 }
-
-                imvPlay.setClickable(false);
-                imvPrev.setClickable(false);
-                Handler handler1 = new Handler();
-                handler1.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        imvPlay.setClickable(true);
-                        imvPrev.setClickable(true);
-                    }
-                }, 3000);
             }
-
         });
 
         imvPrev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listSong.size() > 0) {
-                    if (mediaPlayer.isPlaying() || mediaPlayer != null) {
-                        mediaPlayer.stop();
-                        mediaPlayer.release();
-                        mediaPlayer = null;
-                    }
-                    if (position < listSong.size()) {
-                        imvPlay.setImageResource(R.drawable.ic_pause);
-                        position--;
-
-                        if (position < 0) {
-                            position = listSong.size() - 1;
-                        }
-
-                        if (repeat == true) {
-                            position += 1;
-                        }
-
-                        if (shuffle == true) {
-                            Random random = new Random();
-                            int index = random.nextInt(listSong.size());
-                            if (index == position) {
-                                position = index - 1;
-                            }
-                            position = index;
-                        }
-                        if (position > (listSong.size() - 1)) {
-                            position = 0;
-                        }
-                        new PlayMp3().execute(listSong.get(position).getLinkBaiHat());
-                        musicDiscFrament.playSong(listSong.get(position).getImageBaiHat());
-                        getSupportActionBar().setTitle(listSong.get(position).getTenBaiHat());
-//                        updateTime();
-                    }
+                if (isServiceConnected) {
+                    playSongService.prevMusic();
                 }
-
-                imvPlay.setClickable(false);
-                imvPrev.setClickable(false);
-                Handler handler1 = new Handler();
-                handler1.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        imvPlay.setClickable(true);
-                        imvPrev.setClickable(true);
-                    }
-                }, 3000);
             }
         });
     }
@@ -314,13 +338,6 @@ public class PlaySongActivity extends AppCompatActivity {
 
         musicDiscFrament = (MusicDiscFrament) viewPagerPlaySong.getItem(0);
 
-        if (listSong.size() > 0) {
-            getSupportActionBar().setTitle(listSong.get(0).getTenBaiHat());
-            new PlayMp3().execute(listSong.get(0).getLinkBaiHat());
-            imvPlay.setImageResource(R.drawable.ic_pause);
-
-        }
-
     }
 
     private void mapping() {
@@ -338,139 +355,14 @@ public class PlaySongActivity extends AppCompatActivity {
 
     }
 
-    private void timeSong() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss");
-        tvTimeTotal.setText(simpleDateFormat.format(mediaPlayer.getDuration()));
-        sbTime.setMax(mediaPlayer.getDuration());
-
-    }
-
-    private void updateTime() {
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (mediaPlayer != null) {
-                    sbTime.setProgress(mediaPlayer.getCurrentPosition());
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss");
-                    tvTimeSong.setText(simpleDateFormat.format(mediaPlayer.getCurrentPosition()));
-                    handler.postDelayed(this, 300);
-                    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                        @Override
-                        public void onCompletion(MediaPlayer mp) {
-                            next = true;
-
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                }
-            }
-        }, 300);
-
-        Handler handler1 = new Handler();
-        handler1.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (next == true) {
-                    if (mediaPlayer.isPlaying() || mediaPlayer != null) {
-                        mediaPlayer.stop();
-                        mediaPlayer.release();
-                        mediaPlayer = null;
-                    }
-                    if (position < listSong.size()) {
-                        imvPlay.setImageResource(R.drawable.ic_pause);
-                        position++;
-
-                        if (repeat == true) {
-                            if (position == 0) {
-                                position = listSong.size();
-                            }
-                            position -= 1;
-                        }
-
-                        if (shuffle == true) {
-                            Random random = new Random();
-                            int index = random.nextInt(listSong.size());
-                            if (index == position) {
-                                position = index - 1;
-                            }
-                            position = index;
-                        }
-                        if (position > (listSong.size() - 1)) {
-                            position = 0;
-                        }
-                        new PlayMp3().execute(listSong.get(position).getLinkBaiHat());
-                        musicDiscFrament.playSong(listSong.get(position).getImageBaiHat());
-                        getSupportActionBar().setTitle(listSong.get(position).getTenBaiHat());
-                    }
-
-                    imvPlay.setClickable(false);
-                    imvPrev.setClickable(false);
-                    Handler handler1 = new Handler();
-                    handler1.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            imvPlay.setClickable(true);
-                            imvPrev.setClickable(true);
-                        }
-                    }, 3000);
-
-                    next = false;
-                    handler1.removeCallbacks(this);
-                } else {
-                    handler1.postDelayed(this, 1000);
-                }
-            }
-        }, 500);
-    }
-
-    class PlayMp3 extends AsyncTask<String, Void, String> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-            return strings[0];
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-
-            mediaPlayer = new MediaPlayer();
-            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            mediaPlayer.setAudioAttributes(
-                    new AudioAttributes
-                            .Builder()
-                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                            .build());
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    mediaPlayer.stop();
-                    mediaPlayer.reset();
-                }
-            });
-            try {
-                mediaPlayer.setDataSource(Config.domain + s);
-                mediaPlayer.prepare();
-                mediaPlayer.start();
-                timeSong();
-                updateTime();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
+        if (isServiceConnected) {
+            unbindService(serviceConnection);
+            isServiceConnected = false;
         }
     }
+
 }

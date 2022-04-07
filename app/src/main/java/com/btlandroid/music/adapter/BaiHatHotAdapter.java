@@ -14,11 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.btlandroid.music.R;
 import com.btlandroid.music.activity.PlaySongActivity;
-import com.btlandroid.music.activity.PlaylistActivity;
 import com.btlandroid.music.config.Config;
 import com.btlandroid.music.model.BaiHat;
-import com.btlandroid.music.service.APIService;
-import com.btlandroid.music.service.DataService;
+import com.btlandroid.music.retrofit.APIService;
+import com.btlandroid.music.retrofit.DataService;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

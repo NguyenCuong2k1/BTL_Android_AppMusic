@@ -3,7 +3,6 @@ package com.btlandroid.music.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -13,8 +12,8 @@ import android.view.View;
 import com.btlandroid.music.R;
 import com.btlandroid.music.adapter.ListPlaylistAdapter;
 import com.btlandroid.music.model.Playlist;
-import com.btlandroid.music.service.APIService;
-import com.btlandroid.music.service.DataService;
+import com.btlandroid.music.retrofit.APIService;
+import com.btlandroid.music.retrofit.DataService;
 
 import java.util.ArrayList;
 import java.util.List;

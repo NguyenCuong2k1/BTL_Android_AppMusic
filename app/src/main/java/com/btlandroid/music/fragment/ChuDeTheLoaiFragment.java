@@ -24,12 +24,11 @@ import com.btlandroid.music.config.Config;
 import com.btlandroid.music.model.ChuDe;
 import com.btlandroid.music.model.TheLoai;
 import com.btlandroid.music.model.TheLoaiTrongNgay;
-import com.btlandroid.music.service.APIService;
-import com.btlandroid.music.service.DataService;
+import com.btlandroid.music.retrofit.APIService;
+import com.btlandroid.music.retrofit.DataService;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;

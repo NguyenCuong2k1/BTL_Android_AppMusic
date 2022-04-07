@@ -9,20 +9,116 @@
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/actMainViewPager"
-        app:layout_constraintVertical_weight="1"
         android:layout_width="match_parent"
-        app:layout_constraintBottom_toTopOf="@id/actMainTabLayout"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/clPlaySongCollapse"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_height="0dp">
+        app:layout_constraintVertical_weight="1">
 
     </androidx.viewpager2.widget.ViewPager2>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clPlaySongCollapse"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@drawable/bg_item_playing_song"
+        android:paddingHorizontal="8dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/actMainViewPager"
+        app:layout_constraintBottom_toTopOf="@id/actMainTabLayout">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvImv"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            app:cardCornerRadius="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/imvSongActMain"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tvNameSongActMain"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:layout_marginHorizontal="4dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:maxLines="1"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@id/cvImv"
+            app:layout_constraintRight_toLeftOf="@id/imvPrevActMain"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvNameSingerActMain"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            android:text="Name singer"
+            android:ellipsize="end"
+            android:lines="1"
+            android:maxLines="1"
+            android:textSize="13sp"
+            app:layout_constraintLeft_toRightOf="@id/cvImv"
+            app:layout_constraintRight_toLeftOf="@id/imvPrevActMain"
+            app:layout_constraintTop_toBottomOf="@id/tvNameSongActMain" />
+
+        <ImageView
+            android:id="@+id/imvCloseActMain"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_close"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imvNextActMain"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginRight="4dp"
+            android:src="@drawable/ic_next"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/imvCloseActMain"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imvPlayPauseActMain"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginRight="4dp"
+            android:src="@drawable/ic_play"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/imvNextActMain"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imvPrevActMain"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginRight="4dp"
+            android:src="@drawable/ic_prev"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/imvPlayPauseActMain"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/actMainTabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/actMainViewPager"
         tools:ignore="SpeakableTextPresentCheck">
 
     </com.google.android.material.tabs.TabLayout>

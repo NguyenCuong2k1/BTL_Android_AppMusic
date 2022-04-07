@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,8 +19,8 @@ import com.btlandroid.music.activity.ListAlbumActivity;
 import com.btlandroid.music.adapter.AlbumAdapter;
 import com.btlandroid.music.config.Config;
 import com.btlandroid.music.model.Album;
-import com.btlandroid.music.service.APIService;
-import com.btlandroid.music.service.DataService;
+import com.btlandroid.music.retrofit.APIService;
+import com.btlandroid.music.retrofit.DataService;
 
 import java.util.ArrayList;
 import java.util.List;

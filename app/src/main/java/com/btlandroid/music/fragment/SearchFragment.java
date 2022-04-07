@@ -24,8 +24,8 @@ import android.widget.TextView;
 import com.btlandroid.music.R;
 import com.btlandroid.music.adapter.SearchSongAdapter;
 import com.btlandroid.music.model.BaiHat;
-import com.btlandroid.music.service.APIService;
-import com.btlandroid.music.service.DataService;
+import com.btlandroid.music.retrofit.APIService;
+import com.btlandroid.music.retrofit.DataService;
 
 import java.util.ArrayList;
 import java.util.List;

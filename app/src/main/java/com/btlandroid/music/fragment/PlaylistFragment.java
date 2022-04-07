@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -18,13 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.btlandroid.music.R;
-import com.btlandroid.music.activity.ListSongActivity;
 import com.btlandroid.music.activity.PlaylistActivity;
 import com.btlandroid.music.adapter.PlaylistAdapter;
 import com.btlandroid.music.model.Playlist;
-import com.btlandroid.music.service.APIRetrofitClient;
-import com.btlandroid.music.service.APIService;
-import com.btlandroid.music.service.DataService;
+import com.btlandroid.music.retrofit.APIService;
+import com.btlandroid.music.retrofit.DataService;
 
 import java.util.ArrayList;
 import java.util.List;

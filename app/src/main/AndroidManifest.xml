@@ -12,7 +12,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Music">
         <activity
-            android:name=".activity.DanhsachbaihatActivity"
+            android:name=".activity.PlaySongActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ListAlbumActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.TheLoaiTheoChuDeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ListChuDeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.PlaylistActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ListSongActivity"
             android:exported="false" />
         <activity
             android:name=".activity.MainActivity"

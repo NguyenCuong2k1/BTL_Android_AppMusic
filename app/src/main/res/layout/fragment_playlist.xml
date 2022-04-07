@@ -4,31 +4,28 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:textColor="@android:color/black"
         android:textSize="18dp"
+        android:textStyle="bold"
         android:id="@+id/tvTitlePlaylist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:layout_marginBottom="14dp"
         android:gravity="center"
         android:text="Nhip điệu" />
 
-    <ListView
-        android:id="@+id/lvPlaylist"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPlaylist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvTitlePlaylist" />
 
     <TextView
-        android:textSize="16sp"
         android:id="@+id/tvViewMorePlaylist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lvPlaylist"
-        android:layout_marginBottom="8dp"
+        android:layout_below="@id/rvPlaylist"
         android:drawableLeft="@drawable/ic_more"
         android:text="Xem thêm"
-        android:textColor="@android:color/black" />
+        android:textColor="@color/purple_500"
+        android:textSize="14sp" />
 
 </RelativeLayout>

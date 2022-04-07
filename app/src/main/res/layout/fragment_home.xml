@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:scrollbars="none"
     android:fillViewport="true"
-    tools:context=".fragment.HomeFragment">
+    tools:context=".fragment.HomeFragment"
+    android:background="#f5f5f5">
 
     <LinearLayout
         android:id="@+id/llLayout"
@@ -21,7 +22,29 @@
         <fragment
             android:id="@+id/fragPlaylist"
             android:name="com.btlandroid.music.fragment.PlaylistFragment"
+            android:layout_marginTop="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <fragment
+            android:id="@+id/fragChuDe_TheLoai"
+            android:name="com.btlandroid.music.fragment.ChuDeTheLoaiFragment"
+            android:layout_marginTop="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <fragment
+            android:id="@+id/fragAlbumHot"
+            android:name="com.btlandroid.music.fragment.AlbumHotFragment"
+            android:layout_marginTop="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <fragment
+            android:id="@+id/fragBaiHatHot"
+            android:name="com.btlandroid.music.fragment.BaiHatHotFragment"
+            android:layout_marginTop="24dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
+
 </ScrollView>

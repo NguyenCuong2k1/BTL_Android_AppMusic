@@ -23,6 +23,7 @@ public interface DataService {
     @GET("/APIAppMusic/server/playlistforday.php")
     Call<List<Playlist>> getPlaylistCurrentDay();
 
+<<<<<<< .merge_file_a10904
     @GET("/APIAppMusic/server/theloaichudeforday.php")
     Call<TheLoaiTrongNgay> getCategoryMusic();
 
@@ -70,4 +71,14 @@ public interface DataService {
     @POST("/APIAppMusic/server/timkiembaihat.php")
     Call<List<BaiHat>> getListSongBySearch(@Field("tuKhoa") String keyWord);
 
+=======
+    @FormUrlEncoded
+    @POST("danhsachbaihat.php")
+    Call<List<BaiHat>> GetDanhsachbaihattheoquangcao(@Field("idquangcao") String idquangcao);
+}
+
+    @FormUrlEncoded
+    @POST("danhsachbaihat.php")
+    Call<List<BaiHat>> GetDanhsachbaihattheoplaylist(@Field("idplaylist") String idplaylist);
+>>>>>>> .merge_file_a02716
 }

@@ -3,7 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< .merge_file_a10408
     tools:context=".fragment.SearchFragment">
+=======
+    tools:context=".fragment.SearchFragment"
+    android:background="#f5f5f5">
+>>>>>>> .merge_file_a06284
 
     <!-- TODO: Update blank fragment layout -->
 

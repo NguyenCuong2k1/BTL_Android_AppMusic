@@ -1,6 +1,7 @@
 package com.btlandroid.music.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.btlandroid.music.R;
+import com.btlandroid.music.activity.ListSongActivity;
 import com.btlandroid.music.config.Config;
 import com.btlandroid.music.model.QuangCao;
 import com.squareup.picasso.Picasso;
@@ -58,7 +60,16 @@ public class BannerAdapter extends PagerAdapter {
         tvContent.setText(listBanner.get(position).getNoiDung());
 
         container.addView(view);
-        Log.d(TAG, (Config.domain + listBanner.get(position).getImage()));
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ListSongActivity.class);
+                intent.putExtra("banner", listBanner.get(position));
+                context.startActivity(intent);
+
+            }
+        });
         return view;
     }
 

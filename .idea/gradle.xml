@@ -7,11 +7,15 @@
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+<<<<<<< HEAD
 <<<<<<< .merge_file_a05756
         <option name="gradleJvm" value="Embedded JDK" />
 =======
         <option name="gradleJvm" value="openjdk-18 (2)" />
 >>>>>>> .merge_file_a08340
+=======
+        <option name="gradleJvm" value="openjdk-18 (2)" />
+>>>>>>> origin/branchLinh
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />

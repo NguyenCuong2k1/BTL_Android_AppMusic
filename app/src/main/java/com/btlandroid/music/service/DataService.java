@@ -3,6 +3,7 @@ package com.btlandroid.music.service;
 import com.btlandroid.music.model.Album;
 import com.btlandroid.music.model.BaiHat;
 import com.btlandroid.music.model.ChuDe;
+import com.btlandroid.music.model.Mv;
 import com.btlandroid.music.model.Playlist;
 import com.btlandroid.music.model.QuangCao;
 import com.btlandroid.music.model.TheLoai;
@@ -69,5 +70,23 @@ public interface DataService {
     @FormUrlEncoded
     @POST("/APIAppMusic/server/timkiembaihat.php")
     Call<List<BaiHat>> getListSongBySearch(@Field("tuKhoa") String keyWord);
+
+    @GET("/APIAppMusic/server/mvhot.php")
+    Call<List<Mv>> getMVHot();
+
+    @GET("/APIAppMusic/server/danhsachmvall.php")
+    Call<List<Mv>> getAllMVHot();
+
+    @POST("/APIAppMusic/server/danhsachmvvn.php")
+    Call<List<Mv>> getVnMV();
+
+    @POST("/APIAppMusic/server/danhsachmvusuk.php")
+    Call<List<Mv>> getUsUkMV();
+
+    @POST("/APIAppMusic/server/danhsachmvasia.php")
+    Call<List<Mv>> getAsiaMV();
+
+    @POST("/APIAppMusic/server/danhsachmvhoatau.php")
+    Call<List<Mv>> getHoaTauMV();
 
 }

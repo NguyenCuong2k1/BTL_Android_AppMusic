@@ -40,6 +40,13 @@
             android:layout_height="wrap_content" />
 
         <fragment
+            android:id="@+id/fragMVHot"
+            android:name="com.btlandroid.music.fragment.MVFragment"
+            android:layout_marginTop="24dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <fragment
             android:id="@+id/fragBaiHatHot"
             android:name="com.btlandroid.music.fragment.BaiHatHotFragment"
             android:layout_marginTop="24dp"

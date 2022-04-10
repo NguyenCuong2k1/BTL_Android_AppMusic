@@ -13,11 +13,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.btlandroid.music.R;
+import com.btlandroid.music.activity.ListSongActivity;
+import com.btlandroid.music.activity.MainActivity;
 import com.btlandroid.music.activity.PlaySongActivity;
 import com.btlandroid.music.config.Config;
 import com.btlandroid.music.model.BaiHat;
 import com.btlandroid.music.retrofit.APIService;
 import com.btlandroid.music.retrofit.DataService;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -65,7 +68,7 @@ public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvNameSong, tvNameSinger;
-        ImageView imvSong, imvLike;
+        ImageView imvSong, imvLike, imvMore;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -74,6 +77,7 @@ public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.Vi
             tvNameSinger = itemView.findViewById(R.id.tvNameSinger);
             imvSong = itemView.findViewById(R.id.imvSong);
             imvLike = itemView.findViewById(R.id.imvLike);
+            imvMore = itemView.findViewById(R.id.imvMore);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -109,6 +113,45 @@ public class SearchSongAdapter extends RecyclerView.Adapter<SearchSongAdapter.Vi
                     imvLike.setEnabled(false);
                 }
             });
+
+            imvMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LayoutInflater layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                    View view = layoutInflater.inflate(R.layout.bottom_sheet_dialog, null);
+                    BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialog);
+                    bottomSheetDialog.setContentView(view);
+
+                    ImageView imvSong = view.findViewById(R.id.imvSongDialog);
+                    TextView tvNamgSong = view.findViewById(R.id.tvNameSongDialog);
+                    TextView tvNameSinger = view.findViewById(R.id.tvNameSingerDialog);
+                    TextView tvDownload = view.findViewById(R.id.tvDownloadSong);
+                    TextView tvAddToPlaylist = view.findViewById(R.id.tvAddToPlaylist);
+
+                    tvNamgSong.setText(listSong.get(getPosition()).getTenBaiHat());
+                    tvNameSinger.setText(listSong.get(getPosition()).getSinger());
+                    Picasso.get().load(Config.domain + listSong.get(getPosition()).getImageBaiHat()).into(imvSong);
+
+                    tvDownload.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(context, "Da toi day", Toast.LENGTH_LONG).show();
+                            ((MainActivity)context).onDownload(Config.domain + listSong.get(getPosition()).getLinkBaiHat());
+
+                        }
+                    });
+
+                    tvAddToPlaylist.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    });
+                    bottomSheetDialog.show();
+                }
+            });
+
 
         }
     }

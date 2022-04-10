@@ -70,4 +70,16 @@ public interface DataService {
     @POST("/APIAppMusic/server/timkiembaihat.php")
     Call<List<BaiHat>> getListSongBySearch(@Field("tuKhoa") String keyWord);
 
+    @FormUrlEncoded
+    @POST("/APIAppMusic/server/process_login_with_facebook.php")
+    Call<String> loginByFacebook(@Field("user_IdFacebook") String user_IdFacebook
+                                , @Field("user_name") String user_name
+                                , @Field("user_url_image") String user_url_image);
+
+    @FormUrlEncoded
+    @POST("/APIAppMusic/server/process_login_with_google.php")
+    Call<String> loginByGoogle(@Field("user_name") String user_name
+            , @Field("user_email") String user_email
+            , @Field("user_IdGoogle") String user_IdGoogle
+            , @Field("user_url_image") String user_url_image);
 }

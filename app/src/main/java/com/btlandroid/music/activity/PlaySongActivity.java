@@ -193,7 +193,12 @@ public class PlaySongActivity extends AppCompatActivity {
 
         if (song != null) {
             getSupportActionBar().setTitle(song.getTenBaiHat());
-            imvPlay.setImageResource(R.drawable.ic_pause);
+            if(isPlaying) {
+                imvPlay.setImageResource(R.drawable.ic_pause);
+            } else {
+                imvPlay.setImageResource(R.drawable.ic_play);
+            }
+
             musicDiscFrament.playSong(song.getImageBaiHat());
             sbTime.setMax(sbTimeMax);
             tvTimeTotal.setText(timeTotal);

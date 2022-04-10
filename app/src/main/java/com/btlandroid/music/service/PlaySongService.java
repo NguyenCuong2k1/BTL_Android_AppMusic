@@ -182,7 +182,7 @@ public class PlaySongService extends Service {
 
     public void prevMusic() {
         if (listSong.size() > 0) {
-            if (mediaPlayer != null || mediaPlayer.isPlaying()) {
+            if (mediaPlayer != null) {
                 mediaPlayer.stop();
                 mediaPlayer.release();
                 mediaPlayer = null;
@@ -472,7 +472,8 @@ public class PlaySongService extends Service {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
                             next = true;
-
+                            isPlaying = false;
+                            sendDataToActivity(ACTION_START);
                             try {
                                 Thread.sleep(1000);
                             } catch (InterruptedException e) {
@@ -603,6 +604,7 @@ public class PlaySongService extends Service {
                     mediaPlayer.stop();
                     mediaPlayer.reset();
                     isPlaying = false;
+                    sendDataToActivity(ACTION_START);
                 }
             });
             try {

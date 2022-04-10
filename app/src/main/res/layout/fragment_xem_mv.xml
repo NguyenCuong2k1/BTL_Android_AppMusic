@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <VideoView
+        android:id="@+id/video"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        tools:ignore="Notsibling" />
+
+    <TextView
+        android:id="@+id/tvTenMV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/video"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="10dp"
+        android:text="Việt nam những chuyến đi"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+    <TextView
+        android:layout_marginTop="4dp"
+        android:layout_marginHorizontal="8dp"
+        android:text="Vicky nhung"
+        android:layout_below="@id/tvTenMV"
+        android:textSize="14sp"
+        android:layout_marginBottom="4dp"
+        android:textColor="#9e9e9e"
+        android:id="@+id/tvTenCaSi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+    <TextView
+        android:textSize="18sp"
+        android:textColor="#ba68c8"
+        android:paddingHorizontal="8dp"
+        android:gravity="center_vertical"
+        android:id="@+id/listPlay"
+        android:text="MV đề xuất"
+        android:background="#eeeeee"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/tvTenCaSi"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/lvMV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/listPlay"
+        android:layout_marginTop="15dp"
+        android:divider="#00000000"
+        android:dividerHeight="7dp"
+        android:paddingHorizontal="7dp"
+        android:paddingBottom="10dp" />
+    <RelativeLayout
+        android:id="@+id/progressBar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="220dp">
+        <ProgressBar
+            android:indeterminate="true"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateTint="#ffa726"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/rlAction"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="220dp">
+        <ImageButton
+            android:background="@null"
+            android:paddingTop="8dp"
+            android:paddingLeft="25dp"
+            android:id="@+id/imbArrowBack"
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            android:layout_width="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_alignParentLeft="true"
+            android:gravity="center_horizontal"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageButton
+
+                android:background="@null"
+                android:src="@drawable/prev"
+                android:id="@+id/imbPrev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <ImageButton
+                android:layout_marginHorizontal="40dp"
+                android:id="@+id/imbPlay"
+                android:background="@null"
+                android:src="@drawable/play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <ImageButton
+                android:background="@null"
+                android:src="@drawable/next"
+                android:id="@+id/imbNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
+            android:weightSum="10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tvCurrentPlayTime"
+                android:gravity="center"
+                android:text="00:00"
+                android:layout_weight="1.5"
+                android:textSize="13sp"
+                android:textColor="@color/white"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+            <SeekBar
+                android:progressTint="#5FD2E3"
+                android:progressBackgroundTint="@color/white"
+                android:thumbTint="@color/white"
+                android:id="@+id/sbMV"
+                android:layout_weight="5.5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tvTotalTime"
+                android:gravity="center"
+                android:text="00:00"
+                android:layout_weight="1.5"
+                android:textSize="13sp"
+                android:textColor="@color/white"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+            <ImageButton
+                android:id="@+id/imbEnlarge"
+                android:background="@null"
+                android:src="@drawable/ic_baseline_crop_free_24"
+                android:layout_weight="1.5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

@@ -322,7 +322,7 @@ public class MainActivity extends AppCompatActivity implements BaiHatHotAdapter.
                 }).attach();
 
         viewPager2.setUserInputEnabled(false);
-        isStoragePermissionGranted();
+//        isStoragePermissionGranted();
 
         // Login google
         // Configure sign-in to request the user's ID, email address, and basic
@@ -616,8 +616,6 @@ public class MainActivity extends AppCompatActivity implements BaiHatHotAdapter.
                     String json = gson.toJson(user);
                     prefsEditor.putString("User", json);
                     prefsEditor.apply();
-
-
 
                 } else {
                     Toast.makeText(MainActivity.this, "Đăng nhập thất bại!", Toast.LENGTH_LONG).show();

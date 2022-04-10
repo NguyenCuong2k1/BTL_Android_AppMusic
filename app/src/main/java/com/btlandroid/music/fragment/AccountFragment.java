@@ -49,11 +49,11 @@ public class AccountFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_account, container, false);
 
         rvListSong = view.findViewById(R.id.rvListSong);
-
-        listAudioModel = (ArrayList<AudioModel>) getAllAudioFromDevice(getContext());
-        ListSongDownloadedAdapter adapter = new ListSongDownloadedAdapter(getContext(), (ArrayList<AudioModel>) listAudioModel);
-        rvListSong.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        rvListSong.setAdapter(adapter);
+//
+//        listAudioModel = (ArrayList<AudioModel>) getAllAudioFromDevice(getContext());
+//        ListSongDownloadedAdapter adapter = new ListSongDownloadedAdapter(getContext(), (ArrayList<AudioModel>) listAudioModel);
+//        rvListSong.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+//        rvListSong.setAdapter(adapter);
 
 
         return view;
@@ -164,34 +164,36 @@ public class AccountFragment extends Fragment {
     }
 
     public List<AudioModel> getAllAudioFromDevice(final Context context) {
-
         final List<AudioModel> tempAudioList = new ArrayList<>();
 
-        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        String[] projection = {MediaStore.Audio.AudioColumns.DATA, MediaStore.Audio.AudioColumns.ALBUM, MediaStore.Audio.ArtistColumns.ARTIST,};
-        Cursor c = context.getContentResolver().query(uri, projection, MediaStore.Audio.Media.DATA + " like ? ", new String[]{"%Music%"}, null);
 
-        if (c != null) {
-            while (c.moveToNext()) {
+        if(((MainActivity)context).isStoragePermissionGranted()) {
+            Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+            String[] projection = {MediaStore.Audio.AudioColumns.DATA, MediaStore.Audio.AudioColumns.ALBUM, MediaStore.Audio.ArtistColumns.ARTIST,};
+            Cursor c = context.getContentResolver().query(uri, projection, MediaStore.Audio.Media.DATA + " like ? ", new String[]{"%Music%"}, null);
 
-                AudioModel audioModel = new AudioModel();
-                String path = c.getString(0);
-                String album = c.getString(1);
-                String artist = c.getString(2);
+            if (c != null) {
+                while (c.moveToNext()) {
 
-                String name = path.substring(path.lastIndexOf("/") + 1);
+                    AudioModel audioModel = new AudioModel();
+                    String path = c.getString(0);
+                    String album = c.getString(1);
+                    String artist = c.getString(2);
 
-                audioModel.setaName(name);
-                audioModel.setaAlbum(album);
-                audioModel.setaArtist(artist);
-                audioModel.setaPath(path);
+                    String name = path.substring(path.lastIndexOf("/") + 1);
+
+                    audioModel.setaName(name);
+                    audioModel.setaAlbum(album);
+                    audioModel.setaArtist(artist);
+                    audioModel.setaPath(path);
 
 //                Log.e("Name :" + name, " Album :" + album);
 //                Log.e("Path :" + path, " Artist :" + artist);
 
-                tempAudioList.add(audioModel);
+                    tempAudioList.add(audioModel);
+                }
+                c.close();
             }
-            c.close();
         }
 
         return tempAudioList;

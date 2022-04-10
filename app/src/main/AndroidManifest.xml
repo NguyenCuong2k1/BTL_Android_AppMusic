@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.btlandroid.music">
+    package="com.btlandroid.music" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -36,6 +36,13 @@
             </intent-filter>
         </activity>
 
+
+        <activity
+            android:name=".activity.PlayMVActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.MVActivity"
+            android:exported="false" />
         <activity
             android:name=".activity.PlaySongActivity"
             android:parentActivityName=".activity.MainActivity"
@@ -57,7 +64,7 @@
             android:exported="false" />
         <activity
             android:name=".activity.MainActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -174,56 +174,6 @@ public class AccountFragment extends Fragment {
         rvListSong.setAdapter(adapter);
 
 
-        if (user != null) {
-//            DataService dataService = APIService.getService();
-//            Call<Integer> call;
-//            if (user.getUser_IdFacebook() != null && !user.getUser_IdFacebook().equals("")) {
-//                call = dataService.getUserId(user.getUser_IdFacebook(), TYPE_LOGIN_FACEBOOK);
-//            } else {
-//                call = dataService.getUserId(user.getUser_IdGoogle(), TYPE_LOGIN_GOOGLE);
-//            }
-//            call.enqueue(new Callback<Integer>() {
-//                @Override
-//                public void onResponse(Call<Integer> call, Response<Integer> response) {
-//                    Integer integer = response.body();
-//                    Log.d(TAG, integer.toString());
-//                }
-//
-//                @Override
-//                public void onFailure(Call<Integer> call, Throwable t) {
-//
-//                }
-//            });
-
-//            DataService dataService = APIService.getService();
-//            Call<List<BaiHat>> call = dataService.getListSongLiked(user.getUser_IdFacebook(), TYPE_LOGIN_FACEBOOK);
-////            if (user.getUser_IdFacebook() != null && !user.getUser_IdFacebook().equals("")) {
-////                call = dataService.getListSongLiked(user.getUser_IdFacebook(), TYPE_LOGIN_FACEBOOK);
-////            } else {
-////                call = dataService.getListSongLiked(user.getUser_IdGoogle(), TYPE_LOGIN_GOOGLE);
-////            }
-//            Log.d(TAG, call.request().toString());
-//            call.enqueue(new Callback<List<BaiHat>>() {
-//                @Override
-//                public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
-//                    ArrayList<BaiHat> listSong = (ArrayList<BaiHat>) response.body();
-//                    Log.d(TAG, listSong.toString());
-//
-//                    listSongLikedAdapter = new ListSongLikedAdapter(getContext(), listSong);
-//                    rvListSongLiked.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-//                    rvListSongLiked.setAdapter(listSongLikedAdapter);
-//
-//                }
-//
-//                @Override
-//                public void onFailure(Call<List<BaiHat>> call, Throwable t) {
-//                    Log.d(TAG, t.toString());
-//
-//                }
-//            });
-        }
-
-
         super.onResume();
     }
 

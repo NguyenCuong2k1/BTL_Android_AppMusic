@@ -9,29 +9,39 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <ImageView
             android:id="@+id/im_mp3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/music"
-            android:layout_margin="16dp"/>
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/music" />
 
         <TextView
             android:id="@+id/tenBH"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/im_mp3"
-            android:text="Người Yêu Cũ"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginRight="56dp"
+            android:layout_marginBottom="4dp"
+            android:layout_toEndOf="@+id/im_mp3"
+            android:ellipsize="end"
+            android:lines="1"
+            android:maxLines="1"
+            android:text="Người Yêu Cũ"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tenCaSi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tenBH"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="8dp"
             android:layout_toEndOf="@+id/im_mp3"
             android:text="Khởi My" />
 
@@ -39,11 +49,12 @@
             android:id="@+id/isplay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/pause"
-            android:layout_marginLeft="16dp"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:layout_marginRight="16dp"/>
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:tint="@color/black"
+            android:src="@drawable/pause" />
 
     </RelativeLayout>
 
@@ -61,13 +72,10 @@
             android:text="00:00"
             android:layout_weight="1.5"
             android:textSize="13sp"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:layout_width="0dp"
             android:layout_height="match_parent"/>
         <SeekBar
-            android:progressTint="#5FD2E3"
-            android:progressBackgroundTint="@color/white"
-            android:thumbTint="@color/white"
             android:id="@+id/sbSong"
             android:layout_weight="5.5"
             android:layout_width="0dp"
@@ -78,7 +86,7 @@
             android:text="00:00"
             android:layout_weight="1.5"
             android:textSize="13sp"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:layout_width="0dp"
             android:layout_height="match_parent"/>
         <ImageView
@@ -89,7 +97,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
     </LinearLayout>
-
 
 
 </LinearLayout>

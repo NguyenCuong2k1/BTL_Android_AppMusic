@@ -179,57 +179,6 @@ public class PlayMVActivity extends AppCompatActivity {
             }
         });
 
-        imbEnlarge.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                int orientation = getResources().getConfiguration().orientation;
-                if(orientation == Configuration.ORIENTATION_LANDSCAPE){
-                    PlayMVActivity.this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-                    PlayMVActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) videoView.getLayoutParams();
-                    params.removeRule(RelativeLayout.ALIGN_PARENT_START);
-                    params.removeRule(RelativeLayout.ALIGN_PARENT_END);
-                    params.removeRule(RelativeLayout.ALIGN_PARENT_TOP);
-                    params.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                    videoView.setLayoutParams(params);
-
-                    float scale = PlayMVActivity.this.getResources().getDisplayMetrics().density;
-                    RelativeLayout.LayoutParams params1 = (RelativeLayout.LayoutParams) rlAction.getLayoutParams();
-                    params1.width = params.MATCH_PARENT;
-                    params1.height = (int) (220 * scale);
-                    rlAction.setLayoutParams(params);
-
-                    RelativeLayout.LayoutParams params2 = (RelativeLayout.LayoutParams) progressBar.getLayoutParams();
-                    params2.width = params.MATCH_PARENT;
-                    params2.height = (int) (220 * scale);
-                    progressBar.setLayoutParams(params);
-                    imbEnlarge.setImageResource(R.drawable.ic_baseline_crop_free_24);
-                }else{
-                    PlayMVActivity.this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN);
-                    PlayMVActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) videoView.getLayoutParams();
-                    params.addRule(RelativeLayout.ALIGN_PARENT_START, RelativeLayout.TRUE);
-                    params.addRule(RelativeLayout.ALIGN_PARENT_END, RelativeLayout.TRUE);
-                    params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-                    params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-                    videoView.setLayoutParams(params);
-
-                    RelativeLayout.LayoutParams params1 = (RelativeLayout.LayoutParams) rlAction.getLayoutParams();
-                    params1.width = params.MATCH_PARENT;
-                    params1.height = params.MATCH_PARENT;
-                    rlAction.setLayoutParams(params);
-
-                    RelativeLayout.LayoutParams params2 = (RelativeLayout.LayoutParams) progressBar.getLayoutParams();
-                    params2.width = params.MATCH_PARENT;
-                    params2.height = params.MATCH_PARENT;
-                    progressBar.setLayoutParams(params);
-                    imbEnlarge.setImageResource(R.drawable.ic_baseline_fullscreen_exit_24);
-                }
-
-            }
-        });
 
     }
 

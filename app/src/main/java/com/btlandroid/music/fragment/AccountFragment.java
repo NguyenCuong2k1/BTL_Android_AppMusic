@@ -251,8 +251,8 @@ public class AccountFragment extends Fragment {
                     audioModel.setaArtist(artist);
                     audioModel.setaPath(path);
 
-//                Log.e("Name :" + name, " Album :" + album);
-//                Log.e("Path :" + path, " Artist :" + artist);
+                Log.e("Name :" + name, " Album :" + album);
+                Log.e("Path :" + path, " Artist :" + artist);
 
                     tempAudioList.add(audioModel);
                 }

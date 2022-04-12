@@ -23,8 +23,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.btlandroid.music.R;
 import com.btlandroid.music.activity.MainActivity;
 import com.btlandroid.music.adapter.ListSongDownloadedAdapter;
+import com.btlandroid.music.adapter.ListSongLikedAdapter;
 import com.btlandroid.music.model.AudioModel;
+import com.btlandroid.music.model.BaiHat;
 import com.btlandroid.music.model.User;
+import com.btlandroid.music.retrofit.APIService;
+import com.btlandroid.music.retrofit.DataService;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -37,11 +41,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AccountFragment extends Fragment {
+    private static final int TYPE_LOGIN_FACEBOOK = 0;
+    private static final int TYPE_LOGIN_GOOGLE = 1;
+    private static final String TAG = AccountFragment.class.getName();
     View view;
-    RecyclerView rvListSong;
+    RecyclerView rvListSong, rvListSongLiked;
     ArrayList<AudioModel> listAudioModel;
+    ArrayList<BaiHat> listSongLiked;
+    ListSongLikedAdapter listSongLikedAdapter;
 
     @Nullable
     @Override
@@ -49,6 +61,7 @@ public class AccountFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_account, container, false);
 
         rvListSong = view.findViewById(R.id.rvListSong);
+//        rvListSongLiked = view.findViewById(R.id.rvListSongLiked);
 //
 //        listAudioModel = (ArrayList<AudioModel>) getAllAudioFromDevice(getContext());
 //        ListSongDownloadedAdapter adapter = new ListSongDownloadedAdapter(getContext(), (ArrayList<AudioModel>) listAudioModel);
@@ -159,6 +172,57 @@ public class AccountFragment extends Fragment {
         ListSongDownloadedAdapter adapter = new ListSongDownloadedAdapter(getContext(), (ArrayList<AudioModel>) listAudioModel);
         rvListSong.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rvListSong.setAdapter(adapter);
+
+
+        if (user != null) {
+//            DataService dataService = APIService.getService();
+//            Call<Integer> call;
+//            if (user.getUser_IdFacebook() != null && !user.getUser_IdFacebook().equals("")) {
+//                call = dataService.getUserId(user.getUser_IdFacebook(), TYPE_LOGIN_FACEBOOK);
+//            } else {
+//                call = dataService.getUserId(user.getUser_IdGoogle(), TYPE_LOGIN_GOOGLE);
+//            }
+//            call.enqueue(new Callback<Integer>() {
+//                @Override
+//                public void onResponse(Call<Integer> call, Response<Integer> response) {
+//                    Integer integer = response.body();
+//                    Log.d(TAG, integer.toString());
+//                }
+//
+//                @Override
+//                public void onFailure(Call<Integer> call, Throwable t) {
+//
+//                }
+//            });
+
+//            DataService dataService = APIService.getService();
+//            Call<List<BaiHat>> call = dataService.getListSongLiked(user.getUser_IdFacebook(), TYPE_LOGIN_FACEBOOK);
+////            if (user.getUser_IdFacebook() != null && !user.getUser_IdFacebook().equals("")) {
+////                call = dataService.getListSongLiked(user.getUser_IdFacebook(), TYPE_LOGIN_FACEBOOK);
+////            } else {
+////                call = dataService.getListSongLiked(user.getUser_IdGoogle(), TYPE_LOGIN_GOOGLE);
+////            }
+//            Log.d(TAG, call.request().toString());
+//            call.enqueue(new Callback<List<BaiHat>>() {
+//                @Override
+//                public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
+//                    ArrayList<BaiHat> listSong = (ArrayList<BaiHat>) response.body();
+//                    Log.d(TAG, listSong.toString());
+//
+//                    listSongLikedAdapter = new ListSongLikedAdapter(getContext(), listSong);
+//                    rvListSongLiked.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+//                    rvListSongLiked.setAdapter(listSongLikedAdapter);
+//
+//                }
+//
+//                @Override
+//                public void onFailure(Call<List<BaiHat>> call, Throwable t) {
+//                    Log.d(TAG, t.toString());
+//
+//                }
+//            });
+        }
+
 
         super.onResume();
     }

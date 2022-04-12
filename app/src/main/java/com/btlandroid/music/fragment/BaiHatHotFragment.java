@@ -1,5 +1,7 @@
 package com.btlandroid.music.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,8 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.btlandroid.music.R;
 import com.btlandroid.music.adapter.BaiHatHotAdapter;
 import com.btlandroid.music.model.BaiHat;
+import com.btlandroid.music.model.User;
 import com.btlandroid.music.retrofit.APIService;
 import com.btlandroid.music.retrofit.DataService;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +31,14 @@ import retrofit2.Response;
 
 public class BaiHatHotFragment extends Fragment {
     private static final String TAG = BaiHatHotFragment.class.getName();
+    private static final int TYPE_LOGIN_FACEBOOK = 0;
+    private static final int TYPE_LOGIN_GOOGLE = 1;
     View view;
     RecyclerView rvBaiHatHot;
     BaiHatHotAdapter baiHatHotAdapter;
+    private ArrayList<BaiHat> listSongLiked;
+    private ArrayList<BaiHat> listBaiHat;
+
 
     @Nullable
     @Override
@@ -48,7 +57,7 @@ public class BaiHatHotFragment extends Fragment {
         call.enqueue(new Callback<List<BaiHat>>() {
             @Override
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
-                ArrayList<BaiHat> listBaiHat = (ArrayList<BaiHat>) response.body();
+                listBaiHat = (ArrayList<BaiHat>) response.body();
                 Log.d(TAG, listBaiHat.toString());
 
                 baiHatHotAdapter = new BaiHatHotAdapter(getActivity(), listBaiHat);

@@ -61,7 +61,6 @@ public class SearchFragment extends Fragment {
 
         setHasOptionsMenu(true);
 
-
         return view;
     }
 

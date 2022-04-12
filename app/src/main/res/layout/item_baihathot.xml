@@ -21,15 +21,17 @@
 
         <TextView
             android:id="@+id/tvBaiHatHot"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
             android:layout_marginTop="8dp"
+            android:layout_toLeftOf="@id/imvLike"
             android:layout_toRightOf="@id/imvBaiHatHot"
             android:ellipsize="end"
-            android:maxLines="1"
-            android:text="Tên bài hát"
             android:lines="1"
+            android:maxLines="1"
+            android:textStyle="bold"
+            android:text="Tên bài hát"
             android:textSize="16sp" />
 
         <TextView

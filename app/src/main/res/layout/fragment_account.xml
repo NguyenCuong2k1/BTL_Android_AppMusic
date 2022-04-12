@@ -1,73 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="8dp"
-    android:background="#f5f5f5">
+    android:background="#f5f5f5"
+    android:fillViewport="true"
+    android:scrollbars="none">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        app:layout_constraintTop_toTopOf="parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/clWrapLogin"
+        android:background="#f5f5f5"
         android:padding="8dp">
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/cimvAccount"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/ic_account_circle"
-            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clWrapLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/cimvAccount"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_account_circle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="16dp"
+                android:ellipsize="end"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="Name"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/cimvAccount"
+                app:layout_constraintRight_toLeftOf="@id/tvLoginLogout"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/tvLoginLogout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Đăng nhập"
+                android:textColor="@color/purple_500"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
-            android:id="@+id/tvName"
-            android:layout_width="0dp"
+            android:id="@+id/tvTitleRv"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            android:text="Bài hát đã tải"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:text="Name"
-            android:ellipsize="end"
-            android:lines="1"
-            android:maxLines="1"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="16dp"
-            app:layout_constraintRight_toLeftOf="@id/tvLoginLogout"
-            app:layout_constraintLeft_toRightOf="@id/cimvAccount" />
+            app:layout_constraintTop_toBottomOf="@id/clWrapLogin" />
 
-
-        <TextView
-            android:id="@+id/tvLoginLogout"
-            android:layout_width="wrap_content"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvListSong"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="18dp"
-            android:text="Đăng nhập"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:textColor="@color/purple_500" />
+            android:maxHeight="256dp"
+            app:layout_constraintHeight_max="256dp"
+            app:layout_constraintTop_toBottomOf="@id/tvTitleRv" />
+
+        <fragment
+            android:id="@+id/fragListSongLiked"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@id/rvListSong"
+            android:name="com.btlandroid.music.fragment.ListSongLikedFragment" />
+
+<!--        <TextView-->
+<!--            android:id="@+id/tvLabelSongLiked"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/rvListSong"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Bài hát đã thích"-->
+<!--            android:textSize="16sp"-->
+<!--            android:textStyle="bold"/>-->
+
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/rvListSongLiked"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:maxHeight="512dp"-->
+<!--            app:layout_constraintHeight_max="512dp"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/tvLabelSongLiked"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            app:layout_constraintRight_toRightOf="parent" />-->
+
+<!--        <fragment-->
+<!--            android:id="@+id/fragBaiHatHot"-->
+<!--            android:name="com.btlandroid.music.fragment.BaiHatHotFragment"-->
+<!--            android:layout_marginTop="24dp"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/rvListSongLiked"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content" />-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/tvTitleRv"
-        android:text="Bài hát đã tải"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/clWrapLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvListSong"
-        app:layout_constraintTop_toBottomOf="@id/tvTitleRv"
-        android:layout_width="match_parent"
-        android:maxHeight="256dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintHeight_max="256dp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

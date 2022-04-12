@@ -16,6 +16,8 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface DataService {
     @GET("/APIAppMusic/server/quangcao.php")
@@ -103,5 +105,21 @@ public interface DataService {
     @POST("/APIAppMusic/server/danhsachmvhoatau.php")
     Call<List<Mv>> getHoaTauMV();
 
+    @FormUrlEncoded
+    @POST("/APIAppMusic/server/list_baihat_yeuthich_user.php")
+    Call<List<BaiHat>> getListSongLiked(@Field("user_id") Integer user_id);
+
+//    @FormUrlEncoded
+//    @GET("/APIAppMusic/server/list_baihat_yeuthich_user.php")
+//    Call<List<BaiHat>> getListSongLiked(@Query("id_FbOrGoogle") String id_FbOrGoogle
+//            , @Query("type_login") int type_login);
+
+    @FormUrlEncoded
+    @POST("/APIAppMusic/server/getUserID.php")
+    Call<Integer> getUserId(@Field("id_FbOrGoogle") String id_FbOrGoogle, @Field("type_login") int type_login);
+
+    @FormUrlEncoded
+    @POST("/APIAppMusic/server/userLike.php")
+    Call<String> handleLike(@Field("user_id") Integer user_id, @Field("id_baihat") Integer id_baihat);
 
 }

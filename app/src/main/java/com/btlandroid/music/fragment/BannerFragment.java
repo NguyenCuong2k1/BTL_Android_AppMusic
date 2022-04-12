@@ -63,7 +63,7 @@ public class BannerFragment extends Fragment {
                 bannerAdapter = new BannerAdapter(listBanner, getActivity());
                 viewPager.setAdapter(bannerAdapter);
                 circleIndicator.setViewPager(viewPager);
-//                Log.d(TAG, response.toString());
+                Log.d(TAG, response.toString());
                 handler = new Handler();
                 runnable = new Runnable() {
                     @Override

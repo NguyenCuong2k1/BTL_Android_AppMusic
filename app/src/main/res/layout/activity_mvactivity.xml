@@ -21,7 +21,7 @@
         app:layout_constraintBottom_toTopOf="@id/actMVViewPager"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:tabMode="fixed"
-        app:tabSelectedTextColor="#FFC0CB"
+        app:tabSelectedTextColor="@color/purple_500"
         app:tabTextColor="#000"
         tools:ignore="MissingConstraints">
 

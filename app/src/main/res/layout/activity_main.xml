@@ -135,7 +135,7 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/actMainTabLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:ignore="SpeakableTextPresentCheck">
 

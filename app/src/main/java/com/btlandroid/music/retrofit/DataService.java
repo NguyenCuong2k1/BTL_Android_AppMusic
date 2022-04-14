@@ -119,7 +119,7 @@ public interface DataService {
     Call<Integer> getUserId(@Field("id_FbOrGoogle") String id_FbOrGoogle, @Field("type_login") int type_login);
 
     @FormUrlEncoded
-    @POST("/APIAppMusic/server/userLike.php")
+    @POST("/APIAppMusic/server/userlike.php")
     Call<String> handleLike(@Field("user_id") Integer user_id, @Field("id_baihat") Integer id_baihat);
 
 }

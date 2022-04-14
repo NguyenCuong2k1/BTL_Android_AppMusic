@@ -228,7 +228,10 @@ public class BaiHatHotAdapter extends RecyclerView.Adapter<BaiHatHotAdapter.BaiH
 
     private void handleLike(Integer user_id, String idBaiHat) {
         DataService dataService = APIService.getService();
+        Log.d(TAG, idBaiHat + "\n" + user_id);
         Call<String> call = dataService.handleLike(user_id, Integer.parseInt(idBaiHat));
+        Log.d(TAG, call.request().toString());
+
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {

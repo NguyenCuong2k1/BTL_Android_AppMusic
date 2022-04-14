@@ -234,7 +234,10 @@ public class ListSongAdapter extends RecyclerView.Adapter<ListSongAdapter.ViewHo
         btnFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)context).onLoginByFacebook();
+                Intent intent = new Intent(context, MainActivity.class);
+                intent.putExtra("ACTION_LOGIN", 0);
+                context.startActivity(intent);
+                ((ListSongActivity) context).finish();
                 bottomSheetDialog.cancel();
             }
 
@@ -243,7 +246,10 @@ public class ListSongAdapter extends RecyclerView.Adapter<ListSongAdapter.ViewHo
         btnGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)context).onLoginByGoogle();
+                Intent intent = new Intent(context, MainActivity.class);
+                intent.putExtra("ACTION_LOGIN", 1);
+                context.startActivity(intent);
+                ((ListSongActivity) context).finish();
                 bottomSheetDialog.cancel();
             }
         });

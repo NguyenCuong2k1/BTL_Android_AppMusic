@@ -1,6 +1,7 @@
 package com.btlandroid.music.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
@@ -157,6 +158,11 @@ public class AccountFragment extends Fragment {
         sharedPreferences.edit().clear().apply();
         User user = null;
         updateUI(user);
+
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        intent.putExtra("currentItem", 2);
+        startActivity(intent);
+        getActivity().finish();
     }
 
     @Override

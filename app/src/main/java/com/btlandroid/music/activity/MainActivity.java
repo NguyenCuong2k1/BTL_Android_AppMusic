@@ -24,13 +24,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.btlandroid.music.fragment.AccountFragment;
-import com.btlandroid.music.fragment.HomeFragment;
-import com.btlandroid.music.fragment.SearchFragment;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
-
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
@@ -41,6 +34,9 @@ import com.btlandroid.music.R;
 import com.btlandroid.music.adapter.BaiHatHotAdapter;
 import com.btlandroid.music.adapter.MyViewPagerAdapter;
 import com.btlandroid.music.config.Config;
+import com.btlandroid.music.fragment.AccountFragment;
+import com.btlandroid.music.fragment.HomeFragment;
+import com.btlandroid.music.fragment.SearchFragment;
 import com.btlandroid.music.model.BaiHat;
 import com.btlandroid.music.model.User;
 import com.btlandroid.music.retrofit.APIService;
@@ -49,8 +45,10 @@ import com.btlandroid.music.service.PlaySongService;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.appevents.AppEventsLogger;
 import com.facebook.internal.ImageRequest;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -78,16 +76,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements BaiHatHotAdapter.IDownload, BaiHatHotAdapter.ILogin {
-//    private static final String EMAIL = "email";
+    //    private static final String EMAIL = "email";
     private static final int RC_SIGN_IN = 100;
+    private static final String TAG = MainActivity.class.getName();
     CallbackManager callbackManager;
     LoginButton loginButton;
-
-    private GoogleSignInClient mGoogleSignInClient;
-
     SignInButton signInButton;
-
-    private static final String TAG = MainActivity.class.getName();
     TabLayout tabLayout;
     ViewPager2 viewPager2;
     MyViewPagerAdapter myViewPagerAdapter;
@@ -96,14 +90,15 @@ public class MainActivity extends AppCompatActivity implements BaiHatHotAdapter.
     ConstraintLayout clPlaySongCollapse;
     BaiHat song;
     boolean isPlaying = false;
+    private GoogleSignInClient mGoogleSignInClient;
+    private PlaySongService playSongService;
+    private boolean isServiceConnected;
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             handleLayoutMusic(intent);
         }
     };
-    private PlaySongService playSongService;
-    private boolean isServiceConnected;
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -117,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements BaiHatHotAdapter.
                 Picasso.get().load(Config.domain + song.getImageBaiHat()).into(imvSong);
                 tvNameSinger.setText(song.getSinger());
                 tvNameSong.setText(song.getTenBaiHat());
-                if(playSongService.mediaPlayer.isPlaying()) {
+                if (playSongService.mediaPlayer.isPlaying()) {
                     imvPlayPause.setImageResource(R.drawable.ic_pause);
                 } else {
                     imvPlayPause.setImageResource(R.drawable.ic_play);
@@ -130,6 +125,22 @@ public class MainActivity extends AppCompatActivity implements BaiHatHotAdapter.
             isServiceConnected = false;
         }
     };
+
+    public static void printHashKey(Context pContext) {
+        try {
+            PackageInfo info = pContext.getPackageManager().getPackageInfo(pContext.getPackageName(), PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String hashKey = new String(Base64.encode(md.digest(), 0));
+                Log.i(TAG, "printHashKey() Hash Key: " + hashKey);
+            }
+        } catch (NoSuchAlgorithmException e) {
+            Log.e(TAG, "printHashKey()", e);
+        } catch (Exception e) {
+            Log.e(TAG, "printHashKey()", e);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +155,8 @@ public class MainActivity extends AppCompatActivity implements BaiHatHotAdapter.
         addEvent();
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("data_to_activity"));
 
+        handleActionLogin();
+
 //        List<AudioModel> list = getAllAudioFromDevice(this);
 //        for(int i = 0; i < list.size(); i++) {
 //            Log.d(TAG, list.get(i).getaAlbum() + "\t" + list.get(i).getaPath() + "\t" + list.get(i).getaName() + "\n");
@@ -153,8 +166,18 @@ public class MainActivity extends AppCompatActivity implements BaiHatHotAdapter.
         // Login facebook
         printHashKey(this);
 
+    }
 
-
+    private void handleActionLogin() {
+        Intent intent = getIntent();
+        if (intent.hasExtra("ACTION_LOGIN")) {
+            int action_login = intent.getIntExtra("ACTION_LOGIN", -1);
+            if (action_login == 0) {
+                onLoginByFacebook();
+            } else if (action_login == 1) {
+                onLoginByGoogle();
+            }
+        }
     }
 
     private void addEvent() {
@@ -162,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements BaiHatHotAdapter.
             if (isServiceConnected) {
                 if (playSongService.mediaPlayer != null && playSongService.mediaPlayer.isPlaying()) {
                     playSongService.pauseMusic();
-                } else if(playSongService.mediaPlayer != null){
+                } else if (playSongService.mediaPlayer != null) {
                     playSongService.resumeMusic();
                 }
             }
@@ -181,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements BaiHatHotAdapter.
         });
 
         imvClose.setOnClickListener(v -> {
-            if(isServiceConnected) {
+            if (isServiceConnected) {
                 playSongService.stopSelf();
                 playSongService.sendDataToActivity(PlaySongService.ACTION_CANCEL);
 
@@ -266,7 +289,7 @@ public class MainActivity extends AppCompatActivity implements BaiHatHotAdapter.
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String respon = response.body();
-                if(respon != null && respon.equalsIgnoreCase("Success")) {
+                if (respon != null && respon.equalsIgnoreCase("Success")) {
                     Toast.makeText(MainActivity.this, "Đăng nhập thành công!", Toast.LENGTH_LONG).show();
 
                     AccountFragment accountFragment = (AccountFragment) myViewPagerAdapter.getFragment(2);
@@ -278,6 +301,10 @@ public class MainActivity extends AppCompatActivity implements BaiHatHotAdapter.
                     String json = gson.toJson(user);
                     prefsEditor.putString("User", json);
                     prefsEditor.apply();
+
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    MainActivity.this.finish();
                 } else {
                     Toast.makeText(MainActivity.this, "Đăng nhập thất bại!", Toast.LENGTH_LONG).show();
                 }
@@ -293,12 +320,18 @@ public class MainActivity extends AppCompatActivity implements BaiHatHotAdapter.
     }
 
     private void initView() {
+        Intent intent = getIntent();
+        int currentItem = 0;
+        if (intent.hasExtra("currentItem")) {
+            currentItem = intent.getIntExtra("currentItem", 0);
+        }
+
         myViewPagerAdapter = new MyViewPagerAdapter(getSupportFragmentManager(), getLifecycle());
         myViewPagerAdapter.addFragment(new HomeFragment());
         myViewPagerAdapter.addFragment(new SearchFragment());
         myViewPagerAdapter.addFragment(new AccountFragment());
         viewPager2.setAdapter(myViewPagerAdapter);
-
+        viewPager2.setCurrentItem(currentItem);
 
         new TabLayoutMediator(tabLayout, viewPager2,
                 new TabLayoutMediator.TabConfigurationStrategy() {
@@ -336,23 +369,23 @@ public class MainActivity extends AppCompatActivity implements BaiHatHotAdapter.
 
 // Check for existing Google Sign In account, if the user is already signed in
 // the GoogleSignInAccount will be non-null.
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if (account != null) {
-            String personName = account.getDisplayName();
-            String personGivenName = account.getGivenName();
-            String personFamilyName = account.getFamilyName();
-            String personEmail = account.getEmail();
-            String personId = account.getId();
-            Uri personPhoto = account.getPhotoUrl();
-
-            String urlPhoto = "";
-            if(personPhoto != null) {
-                urlPhoto = personPhoto.toString();
-            }
-            User user = new User(personName, personEmail, personId, urlPhoto);
-            processLoginByGoogle(user);
-            Log.d(TAG, personName + "\n" + personId + "\n" + personEmail);
-        }
+//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+//        if (account != null) {
+//            String personName = account.getDisplayName();
+//            String personGivenName = account.getGivenName();
+//            String personFamilyName = account.getFamilyName();
+//            String personEmail = account.getEmail();
+//            String personId = account.getId();
+//            Uri personPhoto = account.getPhotoUrl();
+//
+//            String urlPhoto = "";
+//            if (personPhoto != null) {
+//                urlPhoto = personPhoto.toString();
+//            }
+//            User user = new User(personName, personEmail, personId, urlPhoto);
+//            processLoginByGoogle(user);
+//            Log.d(TAG, personName + "\n" + personId + "\n" + personEmail);
+//        }
 //        updateUI(account);
 
         // Set the dimensions of the sign-in button.
@@ -387,7 +420,6 @@ public class MainActivity extends AppCompatActivity implements BaiHatHotAdapter.
 
         super.onStart();
     }
-
 
     private void handleLayoutMusic(Intent intent) {
 
@@ -479,7 +511,7 @@ public class MainActivity extends AppCompatActivity implements BaiHatHotAdapter.
         request.setMimeType("audio/MP3)");
         request.allowScanningByMediaScanner();
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED | DownloadManager.Request.VISIBILITY_VISIBLE);
-        if(isStoragePermissionGranted()) {
+        if (isStoragePermissionGranted()) {
             request.setDestinationInExternalPublicDir(Environment.DIRECTORY_MUSIC, uri.getLastPathSegment());
             Log.d(TAG, Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + Environment.DIRECTORY_MUSIC + "/" + uri.getLastPathSegment());
 //                request.setDestinationUri(Uri.parse("file://" + "music" + uri.getLastPathSegment()));
@@ -488,22 +520,20 @@ public class MainActivity extends AppCompatActivity implements BaiHatHotAdapter.
         }
     }
 
-
     public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
-                Log.v(TAG,"Permission is granted");
+                Log.v(TAG, "Permission is granted");
                 return true;
             } else {
 
-                Log.v(TAG,"Permission is revoked");
+                Log.v(TAG, "Permission is revoked");
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                 return false;
             }
-        }
-        else { //permission is automatically granted on sdk<23 upon installation
-            Log.v(TAG,"Permission is granted");
+        } else { //permission is automatically granted on sdk<23 upon installation
+            Log.v(TAG, "Permission is granted");
             return true;
         }
     }
@@ -511,29 +541,12 @@ public class MainActivity extends AppCompatActivity implements BaiHatHotAdapter.
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-            Log.v(TAG,"Permission: "+permissions[0]+ "was "+grantResults[0]);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Log.v(TAG, "Permission: " + permissions[0] + "was " + grantResults[0]);
             //resume tasks needing this permission
 //            onDownload();
         }
     }
-
-    public static void printHashKey(Context pContext) {
-        try {
-            PackageInfo info = pContext.getPackageManager().getPackageInfo(pContext.getPackageName(), PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                String hashKey = new String(Base64.encode(md.digest(), 0));
-                Log.i(TAG, "printHashKey() Hash Key: " + hashKey);
-            }
-        } catch (NoSuchAlgorithmException e) {
-            Log.e(TAG, "printHashKey()", e);
-        } catch (Exception e) {
-            Log.e(TAG, "printHashKey()", e);
-        }
-    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -580,7 +593,7 @@ public class MainActivity extends AppCompatActivity implements BaiHatHotAdapter.
                 Uri personPhoto = acct.getPhotoUrl();
 
                 String urlPhoto = "";
-                if(personPhoto != null) {
+                if (personPhoto != null) {
                     urlPhoto = personPhoto.toString();
                 }
                 User user = new User(personName, personEmail, personId, urlPhoto);
@@ -605,7 +618,7 @@ public class MainActivity extends AppCompatActivity implements BaiHatHotAdapter.
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String respon = response.body();
-                if(respon != null && respon.equalsIgnoreCase("Success")) {
+                if (respon != null && respon.equalsIgnoreCase("Success")) {
                     Toast.makeText(MainActivity.this, "Đăng nhập thành công!", Toast.LENGTH_LONG).show();
                     AccountFragment accountFragment = (AccountFragment) myViewPagerAdapter.getFragment(2);
                     accountFragment.updateUI(user);
@@ -616,6 +629,10 @@ public class MainActivity extends AppCompatActivity implements BaiHatHotAdapter.
                     String json = gson.toJson(user);
                     prefsEditor.putString("User", json);
                     prefsEditor.apply();
+
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    MainActivity.this.finish();
 
                 } else {
                     Toast.makeText(MainActivity.this, "Đăng nhập thất bại!", Toast.LENGTH_LONG).show();
